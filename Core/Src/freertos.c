@@ -183,6 +183,34 @@ void StartTask02(void const * argument)
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 
+// Callback for receiving messages via interrupt
+  void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *CanHandle)
+  {
+
+  	printf("HAL_CAN_RxFifo0MsgPendingCallback");
+  	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_13);
+    CAN_RxHeaderTypeDef rx_header;
+    uint8_t rx_data[8];
+
+    // read received message
+  //  HAL_CAN_GetRxMessage(CanHandle, CAN_RX_FIFO0, &rx_header, rx_data);
+  //
+  //  if ((rx_header.StdId == 0x555U) && (rx_header.IDE == CAN_ID_STD) && (rx_header.DLC == 1U))
+  //  {
+  //	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, rx_data[0]);
+  //  }
+
+  	HAL_CAN_GetRxMessage(CanHandle, CAN_RX_FIFO0, &rx_header, rx_data);
+  	//HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_3);
+
+  	if (rx_header.StdId == 0x34) {
+  		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+  	}
+
+
+  }
+
+
 
 /* USER CODE END Application */
 
